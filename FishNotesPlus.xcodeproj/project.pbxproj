@@ -6,14 +6,77 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8FEFD3192F1E535600ED4750 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEFD3182F1E535600ED4750 /* FirebaseAnalytics */; };
+		8FEFD31B2F1E535600ED4750 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEFD31A2F1E535600ED4750 /* FirebaseAuth */; };
+		8FEFD31D2F1E535600ED4750 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEFD31C2F1E535600ED4750 /* FirebaseDatabase */; };
+		8FEFD31F2F1E535600ED4750 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEFD31E2F1E535600ED4750 /* FirebaseMessaging */; };
+		8FEFD3222F1E536000ED4750 /* AppsFlyerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEFD3212F1E536000ED4750 /* AppsFlyerLib */; };
+		8FEFD3BB2F1E72AB00ED4750 /* NotificationServiceAppExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8FEFD3B42F1E72AB00ED4750 /* NotificationServiceAppExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8FEFD3C32F1E72B600ED4750 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 8FEFD3C22F1E72B600ED4750 /* FirebaseMessaging */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8FEFD3B92F1E72AB00ED4750 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8FC43A3A2F0C01C2005983DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8FEFD3B32F1E72AB00ED4750;
+			remoteInfo = NotificationServiceAppExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8FEFD3C02F1E72AB00ED4750 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8FEFD3BB2F1E72AB00ED4750 /* NotificationServiceAppExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		8FC43A422F0C01C2005983DC /* FishNotesPlus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FishNotesPlus.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FEFD3B42F1E72AB00ED4750 /* NotificationServiceAppExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationServiceAppExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8FEFD3752F1E65B800ED4750 /* Exceptions for "FishNotesPlus" folder in "FishNotesPlus" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8FC43A412F0C01C2005983DC /* FishNotesPlus */;
+		};
+		8FEFD3BF2F1E72AB00ED4750 /* Exceptions for "NotificationServiceAppExtension" folder in "NotificationServiceAppExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8FEFD3B32F1E72AB00ED4750 /* NotificationServiceAppExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		8FC43A442F0C01C2005983DC /* FishNotesPlus */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8FEFD3752F1E65B800ED4750 /* Exceptions for "FishNotesPlus" folder in "FishNotesPlus" target */,
+			);
 			path = FishNotesPlus;
+			sourceTree = "<group>";
+		};
+		8FEFD3B52F1E72AB00ED4750 /* NotificationServiceAppExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8FEFD3BF2F1E72AB00ED4750 /* Exceptions for "NotificationServiceAppExtension" folder in "NotificationServiceAppExtension" target */,
+			);
+			path = NotificationServiceAppExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -23,6 +86,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FEFD31F2F1E535600ED4750 /* FirebaseMessaging in Frameworks */,
+				8FEFD3222F1E536000ED4750 /* AppsFlyerLib in Frameworks */,
+				8FEFD31D2F1E535600ED4750 /* FirebaseDatabase in Frameworks */,
+				8FEFD3192F1E535600ED4750 /* FirebaseAnalytics in Frameworks */,
+				8FEFD31B2F1E535600ED4750 /* FirebaseAuth in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FEFD3B12F1E72AB00ED4750 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FEFD3C32F1E72B600ED4750 /* FirebaseMessaging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +109,8 @@
 			isa = PBXGroup;
 			children = (
 				8FC43A442F0C01C2005983DC /* FishNotesPlus */,
+				8FEFD3B52F1E72AB00ED4750 /* NotificationServiceAppExtension */,
+				8FEFD3C12F1E72B600ED4750 /* Frameworks */,
 				8FC43A432F0C01C2005983DC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,8 +119,16 @@
 			isa = PBXGroup;
 			children = (
 				8FC43A422F0C01C2005983DC /* FishNotesPlus.app */,
+				8FEFD3B42F1E72AB00ED4750 /* NotificationServiceAppExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8FEFD3C12F1E72B600ED4750 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -55,20 +141,50 @@
 				8FC43A3E2F0C01C2005983DC /* Sources */,
 				8FC43A3F2F0C01C2005983DC /* Frameworks */,
 				8FC43A402F0C01C2005983DC /* Resources */,
+				8FEFD3C02F1E72AB00ED4750 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8FEFD3BA2F1E72AB00ED4750 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				8FC43A442F0C01C2005983DC /* FishNotesPlus */,
 			);
 			name = FishNotesPlus;
 			packageProductDependencies = (
+				8FEFD3182F1E535600ED4750 /* FirebaseAnalytics */,
+				8FEFD31A2F1E535600ED4750 /* FirebaseAuth */,
+				8FEFD31C2F1E535600ED4750 /* FirebaseDatabase */,
+				8FEFD31E2F1E535600ED4750 /* FirebaseMessaging */,
+				8FEFD3212F1E536000ED4750 /* AppsFlyerLib */,
 			);
 			productName = FishNotesPlus;
 			productReference = 8FC43A422F0C01C2005983DC /* FishNotesPlus.app */;
 			productType = "com.apple.product-type.application";
+		};
+		8FEFD3B32F1E72AB00ED4750 /* NotificationServiceAppExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8FEFD3BC2F1E72AB00ED4750 /* Build configuration list for PBXNativeTarget "NotificationServiceAppExtension" */;
+			buildPhases = (
+				8FEFD3B02F1E72AB00ED4750 /* Sources */,
+				8FEFD3B12F1E72AB00ED4750 /* Frameworks */,
+				8FEFD3B22F1E72AB00ED4750 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8FEFD3B52F1E72AB00ED4750 /* NotificationServiceAppExtension */,
+			);
+			name = NotificationServiceAppExtension;
+			packageProductDependencies = (
+				8FEFD3C22F1E72B600ED4750 /* FirebaseMessaging */,
+			);
+			productName = NotificationServiceAppExtension;
+			productReference = 8FEFD3B42F1E72AB00ED4750 /* NotificationServiceAppExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -83,6 +199,9 @@
 					8FC43A412F0C01C2005983DC = {
 						CreatedOnToolsVersion = 16.4;
 					};
+					8FEFD3B32F1E72AB00ED4750 = {
+						CreatedOnToolsVersion = 16.4;
+					};
 				};
 			};
 			buildConfigurationList = 8FC43A3D2F0C01C2005983DC /* Build configuration list for PBXProject "FishNotesPlus" */;
@@ -94,18 +213,30 @@
 			);
 			mainGroup = 8FC43A392F0C01C2005983DC;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8FEFD3172F1E535600ED4750 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				8FEFD3202F1E536000ED4750 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8FC43A432F0C01C2005983DC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				8FC43A412F0C01C2005983DC /* FishNotesPlus */,
+				8FEFD3B32F1E72AB00ED4750 /* NotificationServiceAppExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8FC43A402F0C01C2005983DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FEFD3B22F1E72AB00ED4750 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +253,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8FEFD3B02F1E72AB00ED4750 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8FEFD3BA2F1E72AB00ED4750 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8FEFD3B32F1E72AB00ED4750 /* NotificationServiceAppExtension */;
+			targetProxy = 8FEFD3B92F1E72AB00ED4750 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		8FC43A4C2F0C01C3005983DC /* Debug */ = {
@@ -249,8 +395,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FishNotesPlus/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Fish Notes Plus";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow to use it";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Daily Notes Plus may use limited technical information from your device to support core note-taking features, maintain app stability, and improve usability. This data is used only for internal evaluation and enhancement and is not used to track users across other apps, websites, or advertising platforms.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -265,7 +414,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.FishNotesPlus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -289,8 +438,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FishNotesPlus/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Fish Notes Plus";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow to use it";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Daily Notes Plus may use limited technical information from your device to support core note-taking features, maintain app stability, and improve usability. This data is used only for internal evaluation and enhancement and is not used to track users across other apps, websites, or advertising platforms.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -305,7 +457,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.FishNotesPlus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -316,6 +468,67 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 2.5;
+			};
+			name = Release;
+		};
+		8FEFD3BD2F1E72AB00ED4750 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationServiceAppExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationServiceAppExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.FishNotesPlus.NotificationServiceAppExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		8FEFD3BE2F1E72AB00ED4750 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationServiceAppExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationServiceAppExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.FishNotesPlus.NotificationServiceAppExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -340,7 +553,68 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		8FEFD3BC2F1E72AB00ED4750 /* Build configuration list for PBXNativeTarget "NotificationServiceAppExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8FEFD3BD2F1E72AB00ED4750 /* Debug */,
+				8FEFD3BE2F1E72AB00ED4750 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8FEFD3172F1E535600ED4750 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.8.0;
+			};
+		};
+		8FEFD3202F1E536000ED4750 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppsFlyerSDK/AppsFlyerFramework";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.17.8;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8FEFD3182F1E535600ED4750 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEFD3172F1E535600ED4750 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		8FEFD31A2F1E535600ED4750 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEFD3172F1E535600ED4750 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		8FEFD31C2F1E535600ED4750 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEFD3172F1E535600ED4750 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		8FEFD31E2F1E535600ED4750 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEFD3172F1E535600ED4750 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		8FEFD3212F1E536000ED4750 /* AppsFlyerLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEFD3202F1E536000ED4750 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */;
+			productName = AppsFlyerLib;
+		};
+		8FEFD3C22F1E72B600ED4750 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8FEFD3172F1E535600ED4750 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8FC43A3A2F0C01C2005983DC /* Project object */;
 }
