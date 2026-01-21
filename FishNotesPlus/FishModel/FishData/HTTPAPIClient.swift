@@ -1,6 +1,6 @@
 import Foundation
 import AppsFlyerLib
-
+import WebKit
 
 final class HTTPAPIClient: APIClient {
     
