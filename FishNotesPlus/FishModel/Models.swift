@@ -2,6 +2,13 @@ import Foundation
 import FirebaseDatabase
 import SwiftUI
 
+enum PresentationState {
+    case initializing
+    case active
+    case standby
+    case disconnected
+}
+
 struct FishingNote: Identifiable, Codable {
     var id: String = UUID().uuidString
     var title: String
@@ -106,4 +113,11 @@ struct FishingNote: Identifiable, Codable {
             updatedAt: Date(timeIntervalSince1970: updatedAtTimestamp)
         )
     }
+}
+
+
+protocol NetworkWatcher {
+    var onChange: ((Bool) -> Void)? { get set }
+    func start()
+    func stop()
 }

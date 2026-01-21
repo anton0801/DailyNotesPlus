@@ -1,5 +1,15 @@
 import SwiftUI
 
+enum ApplicationStage: Equatable {
+    case dormant
+    case starting
+    case verifying
+    case authorized
+    case running(destination: String)
+    case paused
+    case offline
+}
+
 struct ContentView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @StateObject private var viewModel = NotesViewModel()
@@ -120,4 +130,17 @@ struct TabButton: View {
 
 #Preview {
     ContentView()
+}
+
+
+
+enum StreamEvent {
+    case boot
+    case dataIngested([String: Any])
+    case validationPassed
+    case validationRejected
+    case destinationFound(String)
+    case connectivityLost
+    case connectivityRestored
+    case timeout
 }

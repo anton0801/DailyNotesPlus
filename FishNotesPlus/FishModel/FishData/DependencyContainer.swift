@@ -36,6 +36,23 @@ final class ApplicationCoordinator: ObservableObject {
     private var timeoutWork: DispatchWorkItem?
     private var isLocked = false
     
+    func grantPermission() {
+        requestPermissionAuthorization { [weak self] granted in
+            Task { @MainActor in
+                guard let self = self else { return }
+                
+                self.dependencies.dataStore.savePermissionState(granted: granted, denied: !granted)
+                
+                if granted {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+                
+                self.requestingPermission = false
+                self.finalizeActivation()
+            }
+        }
+    }
+    
     init(dependencies: DependencyContainer = DependencyContainer()) {
         self.dependencies = dependencies
         
@@ -63,33 +80,6 @@ final class ApplicationCoordinator: ObservableObject {
         finalizeActivation()
     }
     
-    func grantPermission() {
-        requestPermissionAuthorization { [weak self] granted in
-            Task { @MainActor in
-                guard let self = self else { return }
-                
-                self.dependencies.dataStore.savePermissionState(granted: granted, denied: !granted)
-                
-                if granted {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-                
-                self.requestingPermission = false
-                self.finalizeActivation()
-            }
-        }
-    }
-    
-    // MARK: - Private Setup
-    
-    private func bindStageChanges() {
-        stageMachine.stagePublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] stage in
-                self?.handleStageTransition(stage)
-            }
-            .store(in: &subscriptions)
-    }
     
     private func handleStageTransition(_ stage: ApplicationStage) {
         guard !isLocked else { return }
@@ -109,6 +99,15 @@ final class ApplicationCoordinator: ObservableObject {
         case .offline:
             presentationState = .disconnected
         }
+    }
+    
+    private func bindStageChanges() {
+        stageMachine.stagePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] stage in
+                self?.handleStageTransition(stage)
+            }
+            .store(in: &subscriptions)
     }
     
     private func monitorNetworkChanges() {
@@ -137,25 +136,6 @@ final class ApplicationCoordinator: ObservableObject {
         
         timeoutWork = work
         DispatchQueue.main.asyncAfter(deadline: .now() + 30, execute: work)
-    }
-    
-    // MARK: - Validation Flow
-    
-    private func executeValidationFlow() async {
-        let gateway = FirebaseValidationGateway()
-        
-        do {
-            let hasAccess = try await gateway.checkAccess()
-            
-            if hasAccess {
-                stageMachine.emit(.validationPassed)
-                await continueFlow()
-            } else {
-                stageMachine.emit(.validationRejected)
-            }
-        } catch {
-            stageMachine.emit(.validationRejected)
-        }
     }
     
     private func continueFlow() async {
@@ -211,6 +191,23 @@ final class ApplicationCoordinator: ObservableObject {
         }
     }
     
+    private func executeValidationFlow() async {
+        let gateway = FirebaseValidationGateway()
+        
+        do {
+            let hasAccess = try await gateway.checkAccess()
+            
+            if hasAccess {
+                stageMachine.emit(.validationPassed)
+                await continueFlow()
+            } else {
+                stageMachine.emit(.validationRejected)
+            }
+        } catch {
+            stageMachine.emit(.validationRejected)
+        }
+    }
+    
     private func loadTemporaryDestination() -> String? {
         return UserDefaults.standard.string(forKey: "temp_url")
     }
@@ -230,14 +227,6 @@ final class ApplicationCoordinator: ObservableObject {
         }
     }
     
-    private func loadCachedDestination() {
-        if let cached = dependencies.dataStore.getCachedDestination() {
-            activate(destination: cached)
-        } else {
-            stageMachine.emit(.timeout)
-        }
-    }
-    
     private func activate(destination: String) {
         guard !isLocked else { return }
         
@@ -248,18 +237,12 @@ final class ApplicationCoordinator: ObservableObject {
         }
     }
     
-    private func shouldShowPermissionRequest() -> Bool {
-        if dependencies.dataStore.wasPermissionGranted() || 
-           dependencies.dataStore.wasPermissionDenied() {
-            return false
+    private func loadCachedDestination() {
+        if let cached = dependencies.dataStore.getCachedDestination() {
+            activate(destination: cached)
+        } else {
+            stageMachine.emit(.timeout)
         }
-        
-        if let lastRequest = dependencies.dataStore.getLastPermissionRequest(),
-           Date().timeIntervalSince(lastRequest) < 259200 {
-            return false
-        }
-        
-        return true
     }
     
     private func finalizeActivation() {
@@ -273,38 +256,21 @@ final class ApplicationCoordinator: ObservableObject {
             completion(granted)
         }
     }
-}
-
-// MARK: - Presentation State
-enum PresentationState {
-    case initializing
-    case active
-    case standby
-    case disconnected
-}
-
-// MARK: - Network Watcher Protocol
-protocol NetworkWatcher {
-    var onChange: ((Bool) -> Void)? { get set }
-    func start()
-    func stop()
-}
-
-// MARK: - Path Watcher
-final class PathWatcher: NetworkWatcher {
     
-    private let monitor = NWPathMonitor()
-    var onChange: ((Bool) -> Void)?
-    
-    func start() {
-        monitor.pathUpdateHandler = { [weak self] path in
-            let isConnected = path.status == .satisfied
-            self?.onChange?(isConnected)
+    private func shouldShowPermissionRequest() -> Bool {
+        if dependencies.dataStore.wasPermissionGranted() ||
+           dependencies.dataStore.wasPermissionDenied() {
+            return false
         }
-        monitor.start(queue: .global(qos: .background))
+        
+        if let lastRequest = dependencies.dataStore.getLastPermissionRequest(),
+           Date().timeIntervalSince(lastRequest) < 259200 {
+            return false
+        }
+        
+        return true
     }
     
-    func stop() {
-        monitor.cancel()
-    }
 }
+
+
