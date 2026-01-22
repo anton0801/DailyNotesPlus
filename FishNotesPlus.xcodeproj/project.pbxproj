@@ -396,7 +396,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FishNotesPlus/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Fish Notes Plus";
+				INFOPLIST_KEY_CFBundleDisplayName = "Daily Notes Plus";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow to use it";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Daily Notes Plus may use limited technical information from your device to support core note-taking features, maintain app stability, and improve usability. This data is used only for internal evaluation and enhancement and is not used to track users across other apps, websites, or advertising platforms.";
@@ -439,7 +439,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FishNotesPlus/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Fish Notes Plus";
+				INFOPLIST_KEY_CFBundleDisplayName = "Daily Notes Plus";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow to use it";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Daily Notes Plus may use limited technical information from your device to support core note-taking features, maintain app stability, and improve usability. This data is used only for internal evaluation and enhancement and is not used to track users across other apps, websites, or advertising platforms.";

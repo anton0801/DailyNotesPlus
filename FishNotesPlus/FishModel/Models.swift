@@ -2,13 +2,6 @@ import Foundation
 import FirebaseDatabase
 import SwiftUI
 
-enum PresentationState {
-    case initializing
-    case active
-    case standby
-    case disconnected
-}
-
 struct FishingNote: Identifiable, Codable {
     var id: String = UUID().uuidString
     var title: String
@@ -115,9 +108,62 @@ struct FishingNote: Identifiable, Codable {
     }
 }
 
+enum AppState: Equatable {
+    case idle
+    case loading
+    case validating
+    case validated
+    case active(url: String)
+    case inactive
+    case offline
+}
 
-protocol NetworkWatcher {
-    var onChange: ((Bool) -> Void)? { get set }
-    func start()
-    func stop()
+struct AttributionData {
+    var data: [String: Any]
+    
+    var isEmpty: Bool {
+        return data.isEmpty
+    }
+    
+    var isOrganic: Bool {
+        return data["af_status"] as? String == "Organic"
+    }
+    
+    subscript(key: String) -> Any? {
+        return data[key]
+    }
+}
+
+struct DeeplinkData {
+    var data: [String: Any]
+    
+    var isEmpty: Bool {
+        return data.isEmpty
+    }
+    
+    subscript(key: String) -> Any? {
+        return data[key]
+    }
+}
+
+struct AppConfiguration {
+    var url: String?
+    var mode: String?
+    var isFirstLaunch: Bool
+    var permissionGranted: Bool
+    var permissionDenied: Bool
+    var lastPermissionRequest: Date?
+    
+    var shouldShowPermissionPrompt: Bool {
+        if permissionGranted || permissionDenied {
+            return false
+        }
+        
+        if let lastRequest = lastPermissionRequest {
+            let daysSinceRequest = Date().timeIntervalSince(lastRequest) / 86400
+            return daysSinceRequest >= 3
+        }
+        
+        return true
+    }
 }

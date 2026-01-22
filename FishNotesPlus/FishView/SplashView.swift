@@ -163,14 +163,14 @@ extension Color {
 
 struct NotesApplicationView: View {
     
-    @StateObject private var coordinator = ApplicationCoordinator()
+    @StateObject private var coordinator = AppViewModel()
     @State private var eventObservers: Set<AnyCancellable> = []
     
     var body: some View {
         ZStack {
             primaryContent
             
-            if coordinator.requestingPermission {
+            if coordinator.showPermissionPrompt {
                 PermissionDialog()
                     .environmentObject(coordinator)
                     .transition(.opacity.combined(with: .scale))
@@ -183,21 +183,21 @@ struct NotesApplicationView: View {
     
     @ViewBuilder
     private var primaryContent: some View {
-        switch coordinator.presentationState {
-        case .initializing:
+        switch coordinator.state {
+        case .idle, .loading, .validating, .validated:
             SplashScreenView()
             
         case .active:
-            if coordinator.endpoint != nil {
+            if coordinator.targetURL != nil {
                 NotesDisplayView()
             } else {
                 ContentView()
             }
             
-        case .standby:
+        case .inactive:
             ContentView()
             
-        case .disconnected:
+        case .offline:
             ConnectionErrorView()
         }
     }
@@ -207,7 +207,7 @@ struct NotesApplicationView: View {
             .publisher(for: Notification.Name("ConversionDataReceived"))
             .compactMap { $0.userInfo?["conversionData"] as? [String: Any] }
             .sink { data in
-                coordinator.ingest(attribution: data)
+                coordinator.handleAttribution(data)
             }
             .store(in: &eventObservers)
         
@@ -215,7 +215,7 @@ struct NotesApplicationView: View {
             .publisher(for: Notification.Name("deeplink_values"))
             .compactMap { $0.userInfo?["deeplinksData"] as? [String: Any] }
             .sink { data in
-                coordinator.ingest(deeplink: data)
+                coordinator.handleDeeplink(data)
             }
             .store(in: &eventObservers)
     }

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct PermissionDialog: View {
     
-    @EnvironmentObject var coordinator: ApplicationCoordinator
+    @EnvironmentObject var coordinator: AppViewModel
     @State private var pulsing = false
     
     var body: some View {
@@ -121,7 +121,7 @@ struct PermissionDialog: View {
             }
             
             Button {
-                coordinator.rejectPermission()
+                coordinator.denyPermission()
             } label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 18, style: .continuous)
