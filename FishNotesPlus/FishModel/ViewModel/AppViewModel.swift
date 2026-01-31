@@ -45,8 +45,10 @@ final class AppViewModel: ObservableObject {
         self.validationService = validationService
         self.networkService = networkService
         
-        loadConfiguration()
-        setupNetworkMonitoring()
+        
+        
+//        loadConfiguration()
+//        setupNetworkMonitoring()
         bootstrap()
     }
     
@@ -106,7 +108,8 @@ final class AppViewModel: ObservableObject {
     
     private func scheduleTimeout() {
         timeoutTask = Task {
-            try? await Task.sleep(nanoseconds: 30_000_000_000)
+            // time changable
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
             
             if !isLocked {
                 await MainActor.run {

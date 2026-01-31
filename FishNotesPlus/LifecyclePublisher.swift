@@ -123,25 +123,23 @@ final class EventPublisher {
     func publishAttributionData(_ data: [AnyHashable: Any]) {
         attributionData = data
         
-        scheduleMerge()
-        
-        if !deeplinkData.isEmpty {
-            mergeAndPublish()
-        }
+//        scheduleMerge()
+//        
+//        if !deeplinkData.isEmpty {
+//            mergeAndPublish()
+//        }
     }
     
     func publishDeeplinkData(_ data: [AnyHashable: Any]) {
-        guard !wasPublished() else { return }
-        
         deeplinkData = data
         
-        emitDeeplink(data)
-        
-        cancelMerge()
-        
-        if !attributionData.isEmpty {
-            mergeAndPublish()
-        }
+//        emitDeeplink(data)
+//        
+//        cancelMerge()
+//        
+//        if !attributionData.isEmpty {
+//            mergeAndPublish()
+//        }
     }
     
     private func scheduleMerge() {

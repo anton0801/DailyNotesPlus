@@ -396,10 +396,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FishNotesPlus/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Daily Notes Plus";
+				INFOPLIST_KEY_CFBundleDisplayName = "Daily Notes Master";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow to use it";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Daily Notes Plus may use limited technical information from your device to support core note-taking features, maintain app stability, and improve usability. This data is used only for internal evaluation and enhancement and is not used to track users across other apps, websites, or advertising platforms.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Daily Notes Master may use limited technical information from your device to support core note-taking features, maintain app stability, and improve usability. This data is used only for internal evaluation and enhancement and is not used to track users across other apps, websites, or advertising platforms.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -414,8 +414,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.FishNotesPlus;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.DailyNotesMaster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
@@ -439,10 +439,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FishNotesPlus/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Daily Notes Plus";
+				INFOPLIST_KEY_CFBundleDisplayName = "Daily Notes Master";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow to use it";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Daily Notes Plus may use limited technical information from your device to support core note-taking features, maintain app stability, and improve usability. This data is used only for internal evaluation and enhancement and is not used to track users across other apps, websites, or advertising platforms.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Daily Notes Master may use limited technical information from your device to support core note-taking features, maintain app stability, and improve usability. This data is used only for internal evaluation and enhancement and is not used to track users across other apps, websites, or advertising platforms.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -457,8 +457,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.FishNotesPlus;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.DailyNotesMaster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
@@ -486,8 +486,8 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.FishNotesPlus.NotificationServiceAppExtension;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.DailyNotesMaster.NotificationServiceAppExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -516,8 +516,8 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.FishNotesPlus.NotificationServiceAppExtension;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sdadplusnott.DailyNotesMaster.NotificationServiceAppExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;

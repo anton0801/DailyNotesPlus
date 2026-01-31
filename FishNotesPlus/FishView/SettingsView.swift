@@ -85,11 +85,11 @@ struct SettingsView: View {
                         .offset(x: 25, y: -20)
                 )
             
-            Text("Daily Notes Plus")
+            Text("Daily Notes Master")
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(Color(hex: "2C3E50"))
             
-            Text("Version 2.0")
+            Text("Version 1.0")
                 .font(.system(size: 14, weight: .medium))
                 .foregroundColor(Color(hex: "7F8C8D"))
         }

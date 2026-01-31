@@ -1,6 +1,6 @@
 workflows:
   sample-workflow:
-    name: DailyNotesPlus workflow
+    name: DailyNotesMaster workflow
     max_build_duration: 120
     instance_type: mac_mini_m2
     integrations:
@@ -8,11 +8,11 @@ workflows:
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.sdadplusnott.FishNotesPlus
+        bundle_identifier: com.sdadplusnott.DailyNotesMaster
       vars:
         APP_STORE_CONNECT_KEY: dailynotesplus_key
-        APP_STORE_APPLE_ID: 6757920328
-        BUNDLE_ID: "com.sdadplusnott.FishNotesPlus"
+        APP_STORE_APPLE_ID: 6758544960
+        BUNDLE_ID: "com.sdadplusnott.DailyNotesMaster"
         XCODE_PROJECT: "FishNotesPlus.xcodeproj"
         XCODE_SCHEME: "FishNotesPlus"
     scripts:
@@ -30,7 +30,7 @@ workflows:
           #!/bin/sh
           cd $CM_BUILD_DIR
           LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-          agvtool new-version -all 5
+          agvtool new-version -all 1
       - name: Build ipa for distribution
         script: |
           xcode-project build-ipa \
