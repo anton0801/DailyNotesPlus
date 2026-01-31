@@ -832,7 +832,7 @@ struct AboutView: View {
                         .padding(.top, 40)
                         
                         VStack(spacing: 16) {
-                            Text("Daily Notes Plus")
+                            Text("Daily Notes Master")
                                 .font(.system(size: 32, weight: .bold))
                                 .foregroundColor(AppTheme.textPrimary)
                             
