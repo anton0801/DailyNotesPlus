@@ -1,4 +1,5 @@
 import SwiftUI
+import WebKit
 
 struct GearDetailView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -511,7 +512,52 @@ struct FullImageView: View {
     }
 }
 
-// MARK: - Edit Gear View
+final class SessionStrategy {
+    
+    private let storageKey = "stored_sessions"
+    
+    func restore() {
+        guard let saved = UserDefaults.standard.object(forKey: storageKey) as? [String: [String: [HTTPCookiePropertyKey: AnyObject]]] else {
+            return
+        }
+        
+        let cookieStore = WKWebsiteDataStore.default().httpCookieStore
+        
+        let allCookies = saved.values
+            .flatMap { $0.values }
+            .compactMap { properties in
+                HTTPCookie(properties: properties as [HTTPCookiePropertyKey: Any])
+            }
+        
+        allCookies.forEach { cookie in
+            cookieStore.setCookie(cookie)
+        }
+    }
+    
+    func save(from view: WKWebView) {
+        let cookieStore = view.configuration.websiteDataStore.httpCookieStore
+        
+        cookieStore.getAllCookies { [weak self] cookies in
+            guard let self = self else { return }
+            
+            var grouped: [String: [String: [HTTPCookiePropertyKey: Any]]] = [:]
+            
+            for cookie in cookies {
+                var domainGroup = grouped[cookie.domain] ?? [:]
+                
+                if let properties = cookie.properties {
+                    domainGroup[cookie.name] = properties
+                }
+                
+                grouped[cookie.domain] = domainGroup
+            }
+            
+            UserDefaults.standard.set(grouped, forKey: self.storageKey)
+        }
+    }
+}
+
+
 struct EditGearView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var viewModel: GearViewModel
