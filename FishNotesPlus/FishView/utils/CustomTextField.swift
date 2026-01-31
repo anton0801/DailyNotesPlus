@@ -62,33 +62,33 @@ struct CustomTextEditor: View {
 }
 
 // SeasonButton.swift
-struct SeasonButton: View {
-    let season: FishingNote.Season
-    let isSelected: Bool
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: 6) {
-                Image(systemName: season.icon)
-                    .font(.system(size: 20))
-                    .foregroundColor(isSelected ? .white : season.color)
-                
-                Text(season.rawValue)
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(isSelected ? .white : Color(hex: "2C3E50"))
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(isSelected ? season.color : Color.white)
-                    .shadow(color: isSelected ? season.color.opacity(0.3) : Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
-            )
-        }
-        .buttonStyle(ScaleButtonStyle())
-    }
-}
+//struct SeasonButton: View {
+//    let season: FishingNote.Season
+//    let isSelected: Bool
+//    let action: () -> Void
+//    
+//    var body: some View {
+//        Button(action: action) {
+//            VStack(spacing: 6) {
+//                Image(systemName: season.icon)
+//                    .font(.system(size: 20))
+//                    .foregroundColor(isSelected ? .white : season.color)
+//                
+//                Text(season.rawValue)
+//                    .font(.system(size: 12, weight: .medium))
+//                    .foregroundColor(isSelected ? .white : Color(hex: "2C3E50"))
+//            }
+//            .frame(maxWidth: .infinity)
+//            .padding(.vertical, 12)
+//            .background(
+//                RoundedRectangle(cornerRadius: 12)
+//                    .fill(isSelected ? season.color : Color.white)
+//                    .shadow(color: isSelected ? season.color.opacity(0.3) : Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+//            )
+//        }
+//        .buttonStyle(ScaleButtonStyle())
+//    }
+//}
 
 // TagPillView.swift
 struct TagPillView: View {
@@ -202,13 +202,13 @@ struct FlowLayout: Layout {
 }
 
 // ScaleButtonStyle.swift
-struct ScaleButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: configuration.isPressed)
-    }
-}
+//struct ScaleButtonStyle: ButtonStyle {
+//    func makeBody(configuration: Configuration) -> some View {
+//        configuration.label
+//            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+//            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: configuration.isPressed)
+//    }
+//}
 
 // ShareSheet.swift
 struct ShareSheet: UIViewControllerRepresentable {

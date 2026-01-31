@@ -112,24 +112,119 @@ class FirebaseService: ObservableObject {
         }
     }
     
-    func observeNotes(completion: @escaping (Result<[FishingNote], Error>) -> Void) {
-        guard let userId = userId else { return }
+    // MARK: - Gear Operations
+    
+    func saveGearItem(_ item: GearItem, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let userId = userId else {
+            completion(.failure(NSError(domain: "FirebaseService", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])))
+            return
+        }
         
-        let notesPath = "users/\(userId)/notes"
-        database.child(notesPath).observe(.value) { snapshot in
-            var notes: [FishingNote] = []
+        let gearPath = "users/\(userId)/gear/\(item.id)"
+        database.child(gearPath).setValue(item.toDictionary()) { error, _ in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    func fetchGear(completion: @escaping (Result<[GearItem], Error>) -> Void) {
+        guard let userId = userId else {
+            completion(.failure(NSError(domain: "FirebaseService", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])))
+            return
+        }
+        
+        let gearPath = "users/\(userId)/gear"
+        database.child(gearPath).observeSingleEvent(of: .value) { snapshot in
+            var items: [GearItem] = []
             
             for child in snapshot.children {
                 if let snapshot = child as? DataSnapshot,
                    let dict = snapshot.value as? [String: Any],
-                   let note = FishingNote.fromDictionary(dict) {
-                    notes.append(note)
+                   let item = GearItem.fromDictionary(dict) {
+                    items.append(item)
                 }
             }
             
-            completion(.success(notes))
+            completion(.success(items))
         } withCancel: { error in
             completion(.failure(error))
+        }
+    }
+    
+    func deleteGearItem(_ itemId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let userId = userId else {
+            completion(.failure(NSError(domain: "FirebaseService", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])))
+            return
+        }
+        
+        let gearPath = "users/\(userId)/gear/\(itemId)"
+        database.child(gearPath).removeValue { error, _ in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    // MARK: - Checklist Operations
+    
+    func saveChecklist(_ checklist: Checklist, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let userId = userId else {
+            completion(.failure(NSError(domain: "FirebaseService", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])))
+            return
+        }
+        
+        let checklistPath = "users/\(userId)/checklists/\(checklist.id)"
+        database.child(checklistPath).setValue(checklist.toDictionary()) { error, _ in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    func fetchChecklists(completion: @escaping (Result<[Checklist], Error>) -> Void) {
+        guard let userId = userId else {
+            completion(.failure(NSError(domain: "FirebaseService", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])))
+            return
+        }
+        
+        let checklistsPath = "users/\(userId)/checklists"
+        database.child(checklistsPath).observeSingleEvent(of: .value) { snapshot in
+            var checklists: [Checklist] = []
+            
+            for child in snapshot.children {
+                if let snapshot = child as? DataSnapshot,
+                   let dict = snapshot.value as? [String: Any],
+                   let checklist = Checklist.fromDictionary(dict) {
+                    checklists.append(checklist)
+                }
+            }
+            
+            completion(.success(checklists))
+        } withCancel: { error in
+            completion(.failure(error))
+        }
+    }
+    
+    func deleteChecklist(_ checklistId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let userId = userId else {
+            completion(.failure(NSError(domain: "FirebaseService", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])))
+            return
+        }
+        
+        let checklistPath = "users/\(userId)/checklists/\(checklistId)"
+        database.child(checklistPath).removeValue { error, _ in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
         }
     }
 }

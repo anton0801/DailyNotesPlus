@@ -10,25 +10,36 @@ struct ExportView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(hex: "FAFAF8")
+                AppTheme.background
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack(spacing: 32) {
                     Spacer()
                     
                     // Icon
-                    Image(systemName: "square.and.arrow.up")
-                        .font(.system(size: 60))
-                        .foregroundColor(Color(hex: "1E88E5"))
+                    ZStack {
+                        Circle()
+                            .fill(AppTheme.primaryAccent.opacity(0.2))
+                            .frame(width: 120, height: 120)
+                            .blur(radius: 20)
+                        
+                        Circle()
+                            .fill(AppTheme.primaryAccent.opacity(0.2))
+                            .frame(width: 100, height: 100)
+                        
+                        Image(systemName: "square.and.arrow.up")
+                            .font(.system(size: 50))
+                            .foregroundColor(AppTheme.primaryAccent)
+                    }
                     
                     VStack(spacing: 12) {
                         Text("Export Notes")
                             .font(.system(size: 28, weight: .bold))
-                            .foregroundColor(Color(hex: "2C3E50"))
+                            .foregroundColor(AppTheme.textPrimary)
                         
                         Text("Choose export format")
                             .font(.system(size: 16))
-                            .foregroundColor(Color(hex: "7F8C8D"))
+                            .foregroundColor(AppTheme.textSecondary)
                     }
                     
                     // Format selection
@@ -51,20 +62,16 @@ struct ExportView: View {
                     
                     // Export button
                     Button(action: exportNotes) {
-                        Text("Export \(viewModel.filteredNotes.count) Notes")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.white)
+                        Text("Export \(viewModel.notes.count) Notes")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundColor(AppTheme.background)
                             .frame(maxWidth: .infinity)
                             .frame(height: 56)
                             .background(
-                                LinearGradient(
-                                    colors: [Color(hex: "1E88E5"), Color(hex: "0D47A1")],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
+                                RoundedRectangle(cornerRadius: 28)
+                                    .fill(AppTheme.primaryGradient)
+                                    .shadow(color: AppTheme.primaryAccent.opacity(0.5), radius: 12, x: 0, y: 6)
                             )
-                            .cornerRadius(28)
-                            .shadow(color: Color(hex: "1E88E5").opacity(0.4), radius: 10, x: 0, y: 5)
                     }
                     .buttonStyle(ScaleButtonStyle())
                     .padding(.horizontal, 40)
@@ -78,7 +85,7 @@ struct ExportView: View {
                     Button("Done") {
                         presentationMode.wrappedValue.dismiss()
                     }
-                    .foregroundColor(Color(hex: "1E88E5"))
+                    .foregroundColor(AppTheme.textSecondary)
                 }
             }
         }
@@ -104,45 +111,38 @@ struct FormatButton: View {
     
     var body: some View {
         Button(action: action) {
-            HStack {
+            HStack(spacing: 16) {
                 Image(systemName: format == .txt ? "doc.text" : "tablecells")
-                    .font(.system(size: 24))
-                    .foregroundColor(isSelected ? .white : Color(hex: "1E88E5"))
+                    .font(.system(size: 28))
+                    .foregroundColor(isSelected ? AppTheme.background : AppTheme.primaryAccent)
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(format == .txt ? "Text File" : "CSV File")
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(isSelected ? .white : Color(hex: "2C3E50"))
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(isSelected ? AppTheme.background : AppTheme.textPrimary)
                     
                     Text(".\(format.fileExtension)")
                         .font(.system(size: 14))
-                        .foregroundColor(isSelected ? .white.opacity(0.8) : Color(hex: "7F8C8D"))
+                        .foregroundColor(isSelected ? AppTheme.background.opacity(0.8) : AppTheme.textSecondary)
                 }
                 
                 Spacer()
                 
                 if isSelected {
                     Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 24))
-                        .foregroundColor(.white)
+                        .font(.system(size: 28))
+                        .foregroundColor(AppTheme.background)
                 }
             }
             .padding(20)
             .background(
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(isSelected ?
-                          LinearGradient(
-                            colors: [Color(hex: "1E88E5"), Color(hex: "0D47A1")],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                          ) :
-                          LinearGradient(
-                            colors: [Color.white, Color.white],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                          )
+                    .fill(isSelected ? AppTheme.primaryAccent : AppTheme.surface)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(AppTheme.primaryAccent.opacity(0.5), lineWidth: isSelected ? 0 : 2)
                     )
-                    .shadow(color: Color.black.opacity(isSelected ? 0.15 : 0.05), radius: 8, x: 0, y: 2)
+                    .shadow(color: isSelected ? AppTheme.primaryAccent.opacity(0.4) : Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
             )
         }
         .buttonStyle(ScaleButtonStyle())

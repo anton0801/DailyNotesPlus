@@ -12,27 +12,31 @@ struct OnboardingView: View {
     let pages = [
         OnboardingPage(
             icon: "square.and.pencil",
-            title: "Write Fishing Notes Freely",
-            description: "Capture your fishing experiences, observations, and insights in your personal journal",
-            color: Color(hex: "1E88E5")
+            title: "Capture Your Fishing Stories",
+            description: "Document every moment with detailed notes, photos, and gear tracking",
+            color: AppTheme.primaryAccent,
+            animation: "notes"
         ),
         OnboardingPage(
-            icon: "tag.fill",
-            title: "Organize by Tags & Favorites",
-            description: "Structure your knowledge with custom tags and mark important notes as favorites",
-            color: Color(hex: "26A69A")
+            icon: "chart.bar.fill",
+            title: "Track Your Progress",
+            description: "Analyze patterns, view statistics, and improve your fishing strategy",
+            color: AppTheme.secondaryAccent,
+            animation: "stats"
         ),
         OnboardingPage(
-            icon: "book.closed.fill",
-            title: "Build Your Fishing Knowledge",
-            description: "Create a comprehensive personal database of fishing wisdom and techniques",
-            color: Color(hex: "FF6F00")
+            icon: "checklist",
+            title: "Stay Organized",
+            description: "Manage gear, create checklists, and never forget essential equipment",
+            color: AppTheme.success,
+            animation: "gear"
         )
     ]
     
     var body: some View {
         ZStack {
-            Color(hex: "FAFAF8")
+            // Dark background
+            AppTheme.background
                 .edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 0) {
@@ -42,8 +46,8 @@ struct OnboardingView: View {
                     Button("Skip") {
                         completeOnboarding()
                     }
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(Color(hex: "7F8C8D"))
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(AppTheme.textSecondary)
                     .padding()
                 }
                 
@@ -60,18 +64,19 @@ struct OnboardingView: View {
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 
-                // Custom page indicator
-                HStack(spacing: 8) {
+                // Custom page indicator with neon effect
+                HStack(spacing: 12) {
                     ForEach(0..<pages.count, id: \.self) { index in
-                        Circle()
-                            .fill(currentPage == index ? pages[index].color : Color.gray.opacity(0.3))
-                            .frame(width: currentPage == index ? 24 : 8, height: 8)
-                            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: currentPage)
+                        Capsule()
+                            .fill(currentPage == index ? pages[index].color : AppTheme.textDisabled)
+                            .frame(width: currentPage == index ? 32 : 8, height: 8)
+                            .shadow(color: currentPage == index ? pages[index].color.opacity(0.8) : Color.clear, radius: 8, x: 0, y: 0)
+                            .animation(.spring(response: 0.4, dampingFraction: 0.7), value: currentPage)
                     }
                 }
-                .padding(.bottom, 20)
+                .padding(.bottom, 24)
                 
-                // Action button
+                // Action button with gradient
                 Button(action: {
                     if currentPage < pages.count - 1 {
                         withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
@@ -81,27 +86,29 @@ struct OnboardingView: View {
                         completeOnboarding()
                     }
                 }) {
-                    HStack {
+                    HStack(spacing: 12) {
                         Text(currentPage < pages.count - 1 ? "Next" : "Get Started")
-                            .font(.system(size: 18, weight: .semibold))
+                            .font(.system(size: 18, weight: .bold))
                         
                         if currentPage == pages.count - 1 {
                             Image(systemName: "arrow.right")
-                                .font(.system(size: 16, weight: .semibold))
+                                .font(.system(size: 16, weight: .bold))
                         }
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(AppTheme.background)
                     .frame(maxWidth: .infinity)
                     .frame(height: 56)
                     .background(
-                        LinearGradient(
-                            colors: [pages[currentPage].color, pages[currentPage].color.opacity(0.8)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
+                        RoundedRectangle(cornerRadius: 28)
+                            .fill(
+                                LinearGradient(
+                                    colors: [pages[currentPage].color, pages[currentPage].color.opacity(0.7)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .shadow(color: pages[currentPage].color.opacity(0.6), radius: 15, x: 0, y: 8)
                     )
-                    .cornerRadius(28)
-                    .shadow(color: pages[currentPage].color.opacity(0.4), radius: 10, x: 0, y: 5)
                 }
                 .padding(.horizontal, 32)
                 .padding(.bottom, 40)
@@ -121,69 +128,95 @@ struct OnboardingPage {
     let title: String
     let description: String
     let color: Color
+    let animation: String
 }
 
 struct OnboardingPageView: View {
     let page: OnboardingPage
     @Binding var currentPage: Int
     let pageIndex: Int
+    
     @State private var iconScale: CGFloat = 0.5
     @State private var iconRotation: Double = -180
     @State private var textOpacity: Double = 0
     @State private var particleAnimation = false
+    @State private var glowRadius: CGFloat = 0
     
     var body: some View {
-        VStack(spacing: 40) {
+        VStack(spacing: 50) {
             Spacer()
             
-            // Animated icon with particles
+            // Animated icon with neon glow
             ZStack {
+                // Neon glow background
+                Circle()
+                    .fill(
+                        RadialGradient(
+                            colors: [
+                                page.color.opacity(0.4),
+                                page.color.opacity(0.2),
+                                Color.clear
+                            ],
+                            center: .center,
+                            startRadius: 0,
+                            endRadius: 120
+                        )
+                    )
+                    .frame(width: 240, height: 240)
+                    .blur(radius: glowRadius)
+                
                 // Background particles
-                ForEach(0..<6, id: \.self) { index in
+                ForEach(0..<8, id: \.self) { index in
                     Circle()
-                        .fill(page.color.opacity(0.2))
-                        .frame(width: 20, height: 20)
+                        .fill(page.color.opacity(0.3))
+                        .frame(width: 12, height: 12)
                         .offset(
-                            x: particleAnimation ? CGFloat.random(in: -100...100) : 0,
-                            y: particleAnimation ? CGFloat.random(in: -100...100) : 0
+                            x: particleAnimation ? cos(Double(index) * .pi / 4) * 100 : 0,
+                            y: particleAnimation ? sin(Double(index) * .pi / 4) * 100 : 0
                         )
                         .opacity(particleAnimation ? 0 : 1)
                 }
                 
-                // Main icon
+                // Main icon circle
                 ZStack {
                     Circle()
-                        .fill(
+                        .fill(AppTheme.surface)
+                        .frame(width: 180, height: 180)
+                        .overlay(
+                            Circle()
+                                .stroke(page.color.opacity(0.5), lineWidth: 3)
+                        )
+                        .shadow(color: page.color.opacity(0.4), radius: 20, x: 0, y: 10)
+                    
+                    Image(systemName: page.icon)
+                        .font(.system(size: 70, weight: .light))
+                        .foregroundStyle(
                             LinearGradient(
-                                colors: [page.color.opacity(0.2), page.color.opacity(0.1)],
+                                colors: [page.color, page.color.opacity(0.7)],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(width: 200, height: 200)
-                    
-                    Image(systemName: page.icon)
-                        .font(.system(size: 80, weight: .light))
-                        .foregroundColor(page.color)
+                        .shadow(color: page.color.opacity(0.8), radius: 10, x: 0, y: 0)
                 }
                 .scaleEffect(iconScale)
                 .rotationEffect(.degrees(iconRotation))
             }
-            .frame(height: 250)
+            .frame(height: 300)
             
             // Text content
-            VStack(spacing: 16) {
+            VStack(spacing: 20) {
                 Text(page.title)
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
-                    .foregroundColor(Color(hex: "2C3E50"))
+                    .font(.system(size: 30, weight: .bold, design: .rounded))
+                    .foregroundColor(AppTheme.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
                 
                 Text(page.description)
                     .font(.system(size: 17, weight: .regular))
-                    .foregroundColor(Color(hex: "7F8C8D"))
+                    .foregroundColor(AppTheme.textSecondary)
                     .multilineTextAlignment(.center)
-                    .lineSpacing(4)
+                    .lineSpacing(6)
                     .padding(.horizontal, 40)
             }
             .opacity(textOpacity)
@@ -208,20 +241,26 @@ struct OnboardingPageView: View {
         iconRotation = -180
         textOpacity = 0
         particleAnimation = false
+        glowRadius = 0
         
         // Animate icon
-        withAnimation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.1)) {
+        withAnimation(.spring(response: 0.9, dampingFraction: 0.6).delay(0.1)) {
             iconScale = 1.0
             iconRotation = 0
         }
         
+        // Animate glow
+        withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true).delay(0.2)) {
+            glowRadius = 20
+        }
+        
         // Animate text
-        withAnimation(.easeOut(duration: 0.5).delay(0.3)) {
+        withAnimation(.easeOut(duration: 0.6).delay(0.4)) {
             textOpacity = 1.0
         }
         
         // Animate particles
-        withAnimation(.easeOut(duration: 1.5).delay(0.2)) {
+        withAnimation(.easeOut(duration: 1.8).delay(0.3)) {
             particleAnimation = true
         }
     }

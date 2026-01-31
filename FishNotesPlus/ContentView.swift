@@ -12,7 +12,9 @@ enum ApplicationStage: Equatable {
 
 struct ContentView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
-    @StateObject private var viewModel = NotesViewModel()
+    @StateObject private var notesViewModel = NotesViewModel()
+    @StateObject private var gearViewModel = GearViewModel()
+    @StateObject private var checklistViewModel = ChecklistViewModel()
     @State private var selectedTab = 0
     
     var body: some View {
@@ -23,54 +25,69 @@ struct ContentView: View {
                 mainTabView
             }
         }
+        .preferredColorScheme(.dark) // Force dark mode
     }
     
     private var mainTabView: some View {
         ZStack(alignment: .bottom) {
+            // Main content
             TabView(selection: $selectedTab) {
-                NotesListView()
-                    .environmentObject(viewModel)
+                HomeView()
+                    .environmentObject(notesViewModel)
+                    .environmentObject(gearViewModel)
+                    .environmentObject(checklistViewModel)
                     .tag(0)
                 
-                TagsView()
-                    .environmentObject(viewModel)
+                NotesListView()
+                    .environmentObject(notesViewModel)
+                    .environmentObject(gearViewModel)
                     .tag(1)
                 
-                FavoritesView()
-                    .environmentObject(viewModel)
+                GearListView()
+                    .environmentObject(gearViewModel)
                     .tag(2)
                 
-                SettingsView()
-                    .environmentObject(viewModel)
+                ChecklistsView()
+                    .environmentObject(checklistViewModel)
                     .tag(3)
+                
+                SettingsView()
+                    .environmentObject(notesViewModel)
+                    .environmentObject(gearViewModel)
+                    .environmentObject(checklistViewModel)
+                    .tag(4)
             }
             
-            CustomTabBar(selectedTab: $selectedTab)
+            // Custom Tab Bar
+            DarkWaterTabBar(selectedTab: $selectedTab)
         }
         .edgesIgnoringSafeArea(.bottom)
     }
 }
 
-// CustomTabBar.swift
-struct CustomTabBar: View {
+struct DarkWaterTabBar: View {
     @Binding var selectedTab: Int
-    @State private var tabAnimation = [false, false, false, false]
+    @State private var tabAnimation = [false, false, false, false, false]
     
     let tabs = [
-        TabItem(icon: "note.text", title: "Notes"),
-        TabItem(icon: "tag.fill", title: "Tags"),
-        TabItem(icon: "star.fill", title: "Favorites"),
-        TabItem(icon: "gear", title: "Settings")
+        TabItem(icon: "house.fill", title: "Home", activeColor: AppTheme.primaryAccent),
+        TabItem(icon: "note.text", title: "Notes", activeColor: AppTheme.primaryAccent),
+        TabItem(icon: "figure.fishing", title: "Gear", activeColor: AppTheme.secondaryAccent),
+        TabItem(icon: "checklist", title: "Lists", activeColor: AppTheme.success),
+        TabItem(icon: "gear", title: "Settings", activeColor: AppTheme.textSecondary)
     ]
     
     var body: some View {
         HStack(spacing: 0) {
             ForEach(0..<tabs.count, id: \.self) { index in
-                TabButton(
+                DarkTabButton(
                     item: tabs[index],
                     isSelected: selectedTab == index,
                     animate: tabAnimation[index]
                 ) {
+                    let impactMed = UIImpactFeedbackGenerator(style: .medium)
+                    impactMed.impactOccurred()
+                    
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                         selectedTab = index
                         tabAnimation[index] = true
@@ -85,9 +102,13 @@ struct CustomTabBar: View {
         .padding(.horizontal, 8)
         .padding(.vertical, 12)
         .background(
-            RoundedRectangle(cornerRadius: 24)
-                .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
+            RoundedRectangle(cornerRadius: 28)
+                .fill(AppTheme.surface)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 28)
+                        .stroke(AppTheme.primaryAccent.opacity(0.2), lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.5), radius: 20, x: 0, y: -5)
         )
         .padding(.horizontal, 16)
         .padding(.bottom, 8)
@@ -97,9 +118,10 @@ struct CustomTabBar: View {
 struct TabItem {
     let icon: String
     let title: String
+    let activeColor: Color
 }
 
-struct TabButton: View {
+struct DarkTabButton: View {
     let item: TabItem
     let isSelected: Bool
     let animate: Bool
@@ -108,31 +130,48 @@ struct TabButton: View {
     var body: some View {
         Button(action: action) {
             VStack(spacing: 4) {
-                Image(systemName: item.icon)
-                    .font(.system(size: 24, weight: isSelected ? .semibold : .regular))
-                    .foregroundColor(isSelected ? Color(hex: "1E88E5") : Color(hex: "7F8C8D"))
-                    .scaleEffect(animate ? 1.2 : 1.0)
+                ZStack {
+                    // Neon glow when selected
+                    if isSelected {
+                        Circle()
+                            .fill(item.activeColor.opacity(0.2))
+                            .frame(width: 50, height: 50)
+                            .blur(radius: 10)
+                    }
+                    
+                    Image(systemName: item.icon)
+                        .font(.system(size: 24, weight: isSelected ? .semibold : .regular))
+                        .foregroundColor(isSelected ? item.activeColor : AppTheme.textSecondary)
+                        .scaleEffect(animate ? 1.3 : 1.0)
+                        .shadow(color: isSelected ? item.activeColor.opacity(0.8) : Color.clear, radius: 8, x: 0, y: 0)
+                }
                 
                 Text(item.title)
                     .font(.system(size: 10, weight: isSelected ? .semibold : .regular))
-                    .foregroundColor(isSelected ? Color(hex: "1E88E5") : Color(hex: "7F8C8D"))
+                    .foregroundColor(isSelected ? item.activeColor : AppTheme.textSecondary)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(isSelected ? Color(hex: "1E88E5").opacity(0.1) : Color.clear)
+                    .fill(isSelected ? item.activeColor.opacity(0.15) : Color.clear)
             )
         }
         .buttonStyle(ScaleButtonStyle())
     }
 }
 
+struct ScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.92 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: configuration.isPressed)
+    }
+}
+
 #Preview {
     ContentView()
 }
-
-
 
 enum StreamEvent {
     case boot

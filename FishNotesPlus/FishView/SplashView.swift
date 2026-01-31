@@ -2,17 +2,18 @@ import SwiftUI
 import Combine
 
 struct SplashScreenView: View {
-    @State private var isActive = false
-    @State private var logoScale: CGFloat = 0.5
+    @State private var logoScale: CGFloat = 0.3
     @State private var logoOpacity: Double = 0
-    @State private var rippleScale: CGFloat = 0
+    @State private var glowRadius: CGFloat = 0
+    @State private var waveOffset: CGFloat = 0
     @State private var particlesOpacity: Double = 0
-    @State private var particles: [FishParticle] = []
+    @State private var particles: [WaterParticle] = []
+    @State private var ripples: [Ripple] = []
     
     var body: some View {
         GeometryReader { g in
             ZStack {
-                AnimatedGradientBackground()
+                DarkWaterBackground(waveOffset: waveOffset)
                 
                 Image(g.size.width > g.size.height ? "main_l" : "main")
                     .resizable()
@@ -21,143 +22,264 @@ struct SplashScreenView: View {
                     .ignoresSafeArea()
                     .opacity(0.5)
                 
-                // Ripple effect
-                Circle()
-                    .stroke(Color.white.opacity(0.3), lineWidth: 2)
-                    .scaleEffect(rippleScale)
-                    .opacity(1 - Double(rippleScale) / 3)
+                // Ripple effects
+                ForEach(ripples) { ripple in
+                    RippleView(ripple: ripple)
+                }
                 
-                Circle()
-                    .stroke(Color.white.opacity(0.2), lineWidth: 2)
-                    .scaleEffect(rippleScale * 0.7)
-                    .opacity(1 - Double(rippleScale) / 2)
-                
-                // Fish particles
+                // Floating particles
                 ForEach(particles) { particle in
-                    FishParticleView(particle: particle)
+                    WaterParticleView(particle: particle)
                         .opacity(particlesOpacity)
                 }
                 
-                // Logo
-                VStack(spacing: 16) {
-                    Spacer()
+                // Main logo with neon glow
+                VStack(spacing: 24) {
+                    ZStack {
+                        // Neon glow effect
+                        Circle()
+                            .fill(
+                                RadialGradient(
+                                    colors: [
+                                        AppTheme.primaryAccent.opacity(0.6),
+                                        AppTheme.primaryAccent.opacity(0.3),
+                                        Color.clear
+                                    ],
+                                    center: .center,
+                                    startRadius: 0,
+                                    endRadius: 100
+                                )
+                            )
+                            .frame(width: 200, height: 200)
+                            .blur(radius: glowRadius)
+                        
+                        // Logo icon
+                        Image(systemName: "book.fill")
+                            .font(.system(size: 90, weight: .thin))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [AppTheme.primaryAccent, AppTheme.secondaryAccent],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .overlay(
+                                Image(systemName: "fish.fill")
+                                    .font(.system(size: 35))
+                                    .foregroundColor(AppTheme.secondaryAccent)
+                                    .offset(x: 40, y: -30)
+                            )
+                            .shadow(color: AppTheme.primaryAccent.opacity(0.8), radius: 20, x: 0, y: 0)
+                            .shadow(color: AppTheme.primaryAccent.opacity(0.4), radius: 40, x: 0, y: 0)
+                    }
                     
-                    Text("Daily Notes Plus")
-                        .font(.custom("PaytoneOne-Regular", size: 32))
-                        .foregroundColor(.white)
-                    
-                    Spacer()
-                    
-                    Text("Loading...")
-                        .font(.custom("PaytoneOne-Regular", size: 18))
-                        .foregroundColor(.white.opacity(0.8))
-                        .padding(.bottom, 24)
+                    VStack(spacing: 8) {
+                        Text("Daily Notes Master")
+                            .font(.system(size: 36, weight: .bold, design: .rounded))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [AppTheme.textPrimary, AppTheme.primaryAccent],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .shadow(color: AppTheme.primaryAccent.opacity(0.5), radius: 10, x: 0, y: 5)
+                        
+                        Text("Dark Waters Edition")
+                            .font(.system(size: 14, weight: .medium, design: .monospaced))
+                            .foregroundColor(AppTheme.textSecondary)
+                            .tracking(2)
+                    }
                 }
                 .scaleEffect(logoScale)
                 .opacity(logoOpacity)
             }
             .edgesIgnoringSafeArea(.all)
             .onAppear {
-                initializeParticles()
+                initializeEffects()
                 startAnimations()
             }
         }
         .ignoresSafeArea()
     }
     
-    private func initializeParticles() {
-        for _ in 0..<8 {
-            particles.append(FishParticle())
+    private func initializeEffects() {
+        // Initialize particles
+        for _ in 0..<15 {
+            particles.append(WaterParticle())
+        }
+        
+        // Initialize ripples
+        for i in 0..<3 {
+            ripples.append(Ripple(delay: Double(i) * 0.5))
         }
     }
     
     private func startAnimations() {
         // Logo animation
-        withAnimation(.spring(response: 0.8, dampingFraction: 0.6, blendDuration: 0)) {
+        withAnimation(.spring(response: 1.0, dampingFraction: 0.6, blendDuration: 0).delay(0.2)) {
             logoScale = 1.0
             logoOpacity = 1.0
         }
         
-        // Ripple animation
-        withAnimation(.easeOut(duration: 2.0)) {
-            rippleScale = 3.0
+        // Glow pulsing animation
+        withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+            glowRadius = 30
+        }
+        
+        // Wave animation
+        withAnimation(.linear(duration: 3.0).repeatForever(autoreverses: false)) {
+            waveOffset = UIScreen.main.bounds.width
         }
         
         // Particles fade in
-        withAnimation(.easeIn(duration: 0.5).delay(0.3)) {
+        withAnimation(.easeIn(duration: 0.8).delay(0.5)) {
             particlesOpacity = 1.0
         }
     }
 }
 
-struct AnimatedGradientBackground: View {
-    @State private var animateGradient = false
+// MARK: - Background with animated waves
+struct DarkWaterBackground: View {
+    let waveOffset: CGFloat
     
     var body: some View {
-        LinearGradient(
-            colors: [
-                Color(hex: "1E88E5"),
-                Color(hex: "0D47A1"),
-                Color(hex: "01579B")
-            ],
-            startPoint: animateGradient ? .topLeading : .bottomLeading,
-            endPoint: animateGradient ? .bottomTrailing : .topTrailing
-        )
-        .onAppear {
-            withAnimation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true)) {
-                animateGradient.toggle()
-            }
+        ZStack {
+            // Base gradient
+            LinearGradient(
+                colors: [
+                    Color(hex: "0A0E1A"),
+                    AppTheme.background,
+                    Color(hex: "1A2332")
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            
+            // Animated wave layers
+            WaveShape(offset: waveOffset, percent: 0.7)
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            AppTheme.primaryAccent.opacity(0.1),
+                            AppTheme.primaryAccent.opacity(0.05)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+            
+            WaveShape(offset: waveOffset * 0.8, percent: 0.6)
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            AppTheme.secondaryAccent.opacity(0.08),
+                            AppTheme.secondaryAccent.opacity(0.03)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
         }
     }
 }
 
-struct FishParticle: Identifiable {
-    let id = UUID()
-    let startX: CGFloat = CGFloat.random(in: -50...UIScreen.main.bounds.width + 50)
-    let startY: CGFloat = CGFloat.random(in: 0...UIScreen.main.bounds.height)
-    let speed: Double = Double.random(in: 3...6)
-    let size: CGFloat = CGFloat.random(in: 20...40)
-    let opacity: Double = Double.random(in: 0.1...0.3)
+struct WaveShape: Shape {
+    var offset: CGFloat
+    var percent: Double
+    
+    var animatableData: CGFloat {
+        get { offset }
+        set { offset = newValue }
+    }
+    
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        
+        let width = rect.width
+        let height = rect.height
+        let midHeight = height * percent
+        
+        path.move(to: CGPoint(x: 0, y: midHeight))
+        
+        for x in stride(from: 0, through: width, by: 1) {
+            let relativeX = x / 50
+            let sine = sin(relativeX + offset / 50)
+            let y = midHeight + sine * 20
+            path.addLine(to: CGPoint(x: x, y: y))
+        }
+        
+        path.addLine(to: CGPoint(x: width, y: height))
+        path.addLine(to: CGPoint(x: 0, y: height))
+        path.closeSubpath()
+        
+        return path
+    }
 }
 
-struct FishParticleView: View {
-    let particle: FishParticle
-    @State private var offsetX: CGFloat = 0
+// MARK: - Water Particle
+struct WaterParticle: Identifiable {
+    let id = UUID()
+    let startX: CGFloat = CGFloat.random(in: 0...UIScreen.main.bounds.width)
+    let startY: CGFloat = CGFloat.random(in: 0...UIScreen.main.bounds.height)
+    let size: CGFloat = CGFloat.random(in: 3...8)
+    let duration: Double = Double.random(in: 3...6)
+    let opacity: Double = Double.random(in: 0.2...0.5)
+    let delay: Double = Double.random(in: 0...2)
+}
+
+struct WaterParticleView: View {
+    let particle: WaterParticle
+    @State private var offsetY: CGFloat = 0
+    @State private var opacity: Double = 1
     
     var body: some View {
-        Image(systemName: "fish.fill")
-            .font(.system(size: particle.size))
-            .foregroundColor(.white.opacity(particle.opacity))
-            .position(x: particle.startX + offsetX, y: particle.startY)
+        Circle()
+            .fill(AppTheme.primaryAccent)
+            .frame(width: particle.size, height: particle.size)
+            .opacity(opacity * particle.opacity)
+            .position(x: particle.startX, y: particle.startY + offsetY)
+            .blur(radius: 2)
             .onAppear {
-                withAnimation(.linear(duration: particle.speed).repeatForever(autoreverses: false)) {
-                    offsetX = UIScreen.main.bounds.width + 100
+                withAnimation(
+                    .linear(duration: particle.duration)
+                    .repeatForever(autoreverses: false)
+                    .delay(particle.delay)
+                ) {
+                    offsetY = -UIScreen.main.bounds.height - 50
+                    opacity = 0
                 }
             }
     }
 }
 
-extension Color {
-    init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
-        switch hex.count {
-        case 6: // RGB
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (a, r, g, b) = (255, 0, 0, 0)
-        }
-        self.init(
-            .sRGB,
-            red: Double(r) / 255,
-            green: Double(g) / 255,
-            blue: Double(b) / 255,
-            opacity: Double(a) / 255
-        )
+// MARK: - Ripple Effect
+struct Ripple: Identifiable {
+    let id = UUID()
+    let delay: Double
+}
+
+struct RippleView: View {
+    let ripple: Ripple
+    @State private var scale: CGFloat = 0
+    @State private var opacity: Double = 0.8
+    
+    var body: some View {
+        Circle()
+            .stroke(AppTheme.primaryAccent.opacity(0.5), lineWidth: 2)
+            .frame(width: 300, height: 300)
+            .scaleEffect(scale)
+            .opacity(opacity)
+            .onAppear {
+                withAnimation(
+                    .easeOut(duration: 2.5)
+                    .repeatForever(autoreverses: false)
+                    .delay(ripple.delay)
+                ) {
+                    scale = 2.0
+                    opacity = 0
+                }
+            }
     }
 }
 
